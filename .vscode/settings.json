@@ -1,0 +1,22 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "OGOR PROD",
+            "database": "ogor_prod",
+            "username": "ogor"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "livestats",
+            "database": "livestats_db",
+            "username": "livestats_user"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+  "model": "core.fsteam",
+  "pk": 1,
+  "fields": {
+    "name": "UPB Drive",
+    "flag": "🇷🇴",
+    "logo": "fsteam-photos/images.png"
+  }
+  },
+  {
+    "model": "core.fsteammember",
+    "pk": 1,
+    "fields": {
+      "team": 1,
+      "first_name": "Catalin",
+      "last_name": "Badea",
+      "nickname": "Dulap",
+      "is_driver": true
+    }
+  }
+]

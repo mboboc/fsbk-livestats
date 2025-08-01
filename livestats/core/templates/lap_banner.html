@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>FSBK 2025 LIVE TIMING</title>
+  </head>
+  <body>
+    {% if not last_lap %}
+      <!-- <p>No last lap data available.</p> -->
+      {% else %}
+      <!-- Canvas element where the Lottie animation will be rendered -->
+      <canvas id="canvas" width="1920" height="1080"></canvas>
+    {% endif %}
+
+    <script type="module">
+      import { DotLottie } from "https://cdn.jsdelivr.net/npm/@lottiefiles/dotlottie-web/+esm";
+
+      // Pass Django variables directly
+      const bestLap = "{{ best_lap|escapejs }}";
+      const lastLap = "{{ last_lap|escapejs }}";
+      const url = "{{ url|escapejs }}";
+
+
+      if (!lastLap) {
+        console.error("Best lap or last lap data is missing.");
+      } else {
+        // Fetch the JSON, modify it, then load into DotLottie
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            // Traverse layers and replace text
+            for (const layer of data.layers || []) {
+              if (layer.ty === 5) { // text layer
+                try {
+                  const textData = layer.t.d.k[0].s;
+                  if (textData.t === "TEXT1") {
+                    console.log("Best Lap:", bestLap);
+                    textData.t = bestLap;
+                  }
+                  if (textData.t === "TEXT2") {
+                    console.log("Last Lap:", lastLap);
+                    textData.t = lastLap;
+                  }
+                } catch (e) {
+                  continue;
+                }
+              }
+            }
+
+            // Create a Blob and Object URL for the modified JSON
+            const blob = new Blob([JSON.stringify(data)], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+
+            new DotLottie({
+              autoplay: true,
+              loop: true,
+              canvas: document.getElementById("canvas"),
+              src: url,
+            });
+          });
+        }
+    </script>
+  </body>
+</html>

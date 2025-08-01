@@ -1,0 +1,6 @@
+10.117.36.138
+scrcpy --video-source=camera --camera-size=1920x1080 --v4l2-sink=/dev/video3 --no-playback --tcpip=10.6.255.183:5555
+scrcpy --video-source=camera --camera-size=1920x1080 --v4l2-sink=/dev/video3 --no-playback --tcpip=10.6.255.183:5555
+sudo modprobe v4l2loopback devices=2 video_nr=2,3 card_label="boboc","dani"
+ls /dev/video*
+v4l2-ctl --list-devices
