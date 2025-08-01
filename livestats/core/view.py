@@ -1,9 +1,11 @@
 from datetime import datetime
+import os
 
 from core.models import FSTimeResult
 from django.http import Http404
 from django.shortcuts import render
 from django.templatetags.static import static
+from django.conf import settings
 
 from .utils import format_duration
 
@@ -26,7 +28,12 @@ def lap_banner(request, event):
         or last_lap
     )
 
-    banner_url = static(f'{last_lap.driver.fsbk_id if last_lap and last_lap.driver and last_lap.driver.fsbk_id else "data"}.json')
+    filename = f'{last_lap.driver.fsbk_id if last_lap and last_lap.driver and last_lap.driver.fsbk_id else "data"}.json'
+    filepath = os.path.join(settings.STATIC_ROOT, filename)
+    if not os.path.exists(filepath):
+        print(f"Banner file ({filename}) not found, using default.")
+        filename = "data.json"
+    url = static(filename)
 
     return render(
         request,
@@ -35,6 +42,6 @@ def lap_banner(request, event):
             "best_lap": format_duration(best_lap.time_result if best_lap else None),
             "last_lap": format_duration(last_lap.time_result if last_lap else None),
             "event": event,
-            "url": static("data.json")
+            "url": url,
         },
     )
