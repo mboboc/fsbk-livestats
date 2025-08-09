@@ -21,8 +21,10 @@ def lap_banner(request, event):
         .first()
     )
 
+    team = last_lap.driver.team if last_lap and last_lap.driver else None
+
     best_lap = (
-        FSTimeResult.objects.filter(created_at__date=today, event=event.upper())
+        FSTimeResult.objects.filter(created_at__date=today, event=event.upper(), driver__team=team)
         .order_by("time_result")
         .first()
         or last_lap
@@ -39,8 +41,8 @@ def lap_banner(request, event):
         request,
         "lap_banner.html",
         context={
-            "best_lap": format_duration(best_lap.time_result if best_lap else None),
-            "last_lap": format_duration(last_lap.time_result if last_lap else None),
+            "best_lap": best_lap.time_result if best_lap else None,
+            "last_lap": last_lap.time_result if last_lap else None,
             "event": event,
             "url": url,
         },

@@ -9,7 +9,7 @@ from admin_auto_filters.filters import AutocompleteFilterFactory
 
 @admin.register(FSTeam)
 class FSTeamAdmin(admin.ModelAdmin):
-    list_display = ("name", "flag", "logo_image")
+    list_display = ("fsbk_id", "name", "flag", "logo_image")
     search_fields = ("name", "fsbk_id")
 
     def logo_image(self, obj):
